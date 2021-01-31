@@ -1,0 +1,25 @@
+{
+  "results":[
+    {
+      "creationDate":1,
+      "creator":"",
+      "members":[
+        {
+          "role":"",
+          "inviteDate":1,
+          "inviteStatus":"",
+          "orgKey":"",
+          "displayName":"",
+          "fullName":"",
+          "email":"",
+          "image":"",
+          "userKey":"",
+        }
+      ],
+      "name":"",
+      "sharingRestrictedToTeam":false,
+      "key":"",
+      "lastSavedTimestamp":1
+    }
+  ]
+}
