@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"strings"
 
+	//"strings"
+
 	"github.com/RoughIndustries/go_streak/errors"
 	"github.com/RoughIndustries/go_streak/models"
 )
@@ -166,7 +168,7 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 		return fmt.Errorf("Error reading response body data: %s", err.Error())
 	}
 
-	log.Printf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
+	//log.Printf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
 
 	if res.StatusCode >= 200 && res.StatusCode < 300 {
 		if output != nil && len(resData) > 0 {
