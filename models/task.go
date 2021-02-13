@@ -1,7 +1,7 @@
 package models
 
 type TaskResults struct {
-	Results []Task `json:"results"`
+	Results []Task
 }
 
 type Task struct {

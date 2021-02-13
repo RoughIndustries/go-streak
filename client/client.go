@@ -52,6 +52,25 @@ func (c *Client) do(method, path string, input, output interface{}) error {
 	return nil
 }
 
+func (c *Client) doBytes(method, path string, input interface{}) ([]byte, error) {
+	url := streakAPIBaseURL + path
+
+	req, err := c.createRequest(method, url, input)
+	if err != nil {
+		return nil, fmt.Errorf("Error creating request object: %s", err.Error())
+	}
+
+	if output, err := c.executeRequestBytes(req); err != nil {
+		if aerr, ok := err.(*errors.APIError); ok {
+			return nil, aerr
+		}
+		return nil, fmt.Errorf("Error executing request: %s", err.Error())
+	} else {
+		return output, nil
+	}
+
+}
+
 func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback) error {
 	nextURL := streakAPIBaseURL + path + "?results=25"
 
@@ -183,5 +202,30 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	return &errors.APIError{
 		Status:       res.StatusCode,
 		ResponseBody: resData,
+	}
+}
+
+func (c *Client) executeRequestBytes(req *http.Request) (output []byte, err error) {
+	defer func() {
+		if err != nil {
+			log.Printf("Client.executeRequest() error: %s", err.Error())
+		}
+	}()
+
+	httpClient := http.Client{}
+
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("Error making HTTP request: %s", err.Error())
+	}
+	defer res.Body.Close()
+
+	output, _ = ioutil.ReadAll(res.Body)
+
+	if res.StatusCode >= 200 && res.StatusCode < 300 {
+		return output, nil
+	}
+	return output, &errors.APIError{
+		Status: res.StatusCode,
 	}
 }
